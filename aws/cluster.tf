@@ -18,11 +18,11 @@ locals {
 }
 
 resource "aws_iam_policy" "redpanda" {
-  count  = var.tiered_storage_enabled ? 1 : 0
-  name   = local.deployment_id
-  path   = "/"
+  count = var.tiered_storage_enabled ? 1 : 0
+  name  = local.deployment_id
+  path  = "/"
   policy = jsonencode({
-    Version   = "2012-10-17"
+    Version = "2012-10-17"
     Statement = [
       {
         "Effect" : "Allow",
@@ -39,15 +39,15 @@ resource "aws_iam_policy" "redpanda" {
 }
 
 resource "aws_iam_role" "redpanda" {
-  count              = var.tiered_storage_enabled ? 1 : 0
-  name               = local.deployment_id
+  count = var.tiered_storage_enabled ? 1 : 0
+  name  = local.deployment_id
   assume_role_policy = jsonencode({
-    Version   = "2012-10-17"
+    Version = "2012-10-17"
     Statement = [
       {
-        Action    = "sts:AssumeRole"
-        Effect    = "Allow"
-        Sid       = ""
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
         Principal = {
           Service = "ec2.amazonaws.com"
         }
@@ -81,7 +81,7 @@ resource "aws_instance" "redpanda" {
   placement_partition_number = var.ha ? (count.index % aws_placement_group.redpanda-pg[0].partition_count) + 1 : null
   availability_zone          = var.availability_zone[count.index % length(var.availability_zone)]
   subnet_id                  = var.subnet_id
-  tags                       = merge(
+  tags = merge(
     local.merged_tags,
     {
       Name = "${local.deployment_id}-node-${count.index}",
@@ -122,7 +122,7 @@ resource "aws_instance" "prometheus" {
   key_name               = aws_key_pair.ssh.key_name
   subnet_id              = var.subnet_id
   vpc_security_group_ids = concat([aws_security_group.node_sec_group.id], var.security_groups_prometheus)
-  tags                   = merge(
+  tags = merge(
     local.merged_tags,
     {
       Name = "${local.deployment_id}-prometheus",
@@ -147,7 +147,7 @@ resource "aws_instance" "client" {
   key_name               = aws_key_pair.ssh.key_name
   subnet_id              = var.subnet_id
   vpc_security_group_ids = concat([aws_security_group.node_sec_group.id], var.security_groups_client)
-  tags                   = merge(
+  tags = merge(
     local.merged_tags,
     {
       Name = "${local.deployment_id}-client",
@@ -278,6 +278,8 @@ resource "local_file" "hosts_ini_for_ci" {
       monitor_public_ip          = var.enable_monitoring ? aws_instance.prometheus[0].public_ip : ""
       monitor_private_ip         = var.enable_monitoring ? aws_instance.prometheus[0].private_ip : ""
       rack                       = aws_instance.redpanda[*].placement_partition_number
+      rack_awareness             = var.ha || length(var.availability_zone) > 1
+      availability_zone          = aws_instance.redpanda[*].availability_zone
       redpanda_public_ips        = aws_instance.redpanda[*].public_ip
       redpanda_private_ips       = aws_instance.redpanda[*].private_ip
       ssh_user                   = var.distro_ssh_user[var.distro]

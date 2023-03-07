@@ -6,7 +6,8 @@ variable "aws_region" {
 
 variable "availability_zone" {
   description = "The AWS AZ to deploy the infrastructure on"
-  default = ["us-west-2a", "us-west-2b","us-west-2c"]
+  default     = ["us-west-2a", "us-west-2b", "us-west-2c"]
+  type        = list(string)
 }
 
 variable "clients" {
