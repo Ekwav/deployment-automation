@@ -42,6 +42,7 @@ resource "local_file" "hosts_ini" {
       enable_monitoring          = "${var.enable_monitoring}"
       ssh_user                   = "${var.admin_username}"
       rack                       = "${azurerm_linux_virtual_machine.redpanda.*.platform_fault_domain}"
+      rack_awareness             = var.ha
       cloud_storage_region       = var.region
       tiered_storage_enabled     = false
       tiered_storage_bucket_name = ""

@@ -4,7 +4,7 @@ variable "region" {
 
 variable "availability_zone" {
   description = "The zone where the cluster will be deployed [a,b,...]"
-  default     = ["us-west2-a", "us-west2-b"]
+  default     = ["a"]
   type        = list(string)
 }
 

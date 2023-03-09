@@ -277,7 +277,7 @@ resource "local_file" "hosts_ini_for_ci" {
       enable_monitoring          = var.enable_monitoring
       monitor_public_ip          = var.enable_monitoring ? aws_instance.prometheus[0].public_ip : ""
       monitor_private_ip         = var.enable_monitoring ? aws_instance.prometheus[0].private_ip : ""
-      rack                       = aws_instance.redpanda[*].placement_partition_number
+      rack                       = var.ha ? aws_instance.redpanda[*].placement_partition_number : aws_instance.redpanda[*].availability_zone
       rack_awareness             = var.ha || length(var.availability_zone) > 1
       availability_zone          = aws_instance.redpanda[*].availability_zone
       redpanda_public_ips        = aws_instance.redpanda[*].public_ip
@@ -300,7 +300,7 @@ resource "local_file" "hosts_ini" {
       enable_monitoring          = var.enable_monitoring
       monitor_public_ip          = var.enable_monitoring ? aws_instance.prometheus[0].public_ip : ""
       monitor_private_ip         = var.enable_monitoring ? aws_instance.prometheus[0].private_ip : ""
-      rack                       = aws_instance.redpanda[*].placement_partition_number
+      rack                       = var.ha ? aws_instance.redpanda[*].placement_partition_number : aws_instance.redpanda[*].availability_zone
       rack_awareness             = var.ha || length(var.availability_zone) > 1
       availability_zone          = aws_instance.redpanda[*].availability_zone
       redpanda_public_ips        = aws_instance.redpanda[*].public_ip

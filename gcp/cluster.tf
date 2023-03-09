@@ -18,7 +18,7 @@ resource "google_compute_instance" "redpanda" {
   count             = var.nodes
   name              = "rp-node-${count.index}-${local.deployment_id}"
   tags              = ["rp-cluster", "tf-deployment-${local.deployment_id}"]
-  zone              = var.availability_zone[count.index % length(var.availability_zone)]
+  zone              = "${var.region}-${var.availability_zone[count.index % length(var.availability_zone)]}"
   machine_type      = var.machine_type
   // GCP does not give you visibility nor control over which failure domain a resource has been placed into
   // (https://issuetracker.google.com/issues/256993209?pli=1). So the only way that we can guarantee that
@@ -62,7 +62,7 @@ resource "google_compute_instance" "monitor" {
   name         = "rp-monitor-${local.deployment_id}"
   tags         = ["rp-cluster", "tf-deployment-${local.deployment_id}"]
   machine_type = var.monitor_machine_type
-  zone         = var.availability_zone[0]
+  zone         = "${var.region}-${var.availability_zone[0]}"
 
   metadata = {
     ssh-keys = <<KEYS
@@ -95,7 +95,7 @@ resource "google_compute_instance" "client" {
   name         = "rp-client-${count.index}-${local.deployment_id}"
   tags         = ["rp-cluster", "tf-deployment-${local.deployment_id}"]
   machine_type = var.client_machine_type
-  zone         = var.availability_zone[count.index % length(var.availability_zone)]
+  zone         = "${var.region}-${var.availability_zone[count.index % length(var.availability_zone)]}"
 
   metadata = {
     ssh-keys = <<KEYS
@@ -150,7 +150,7 @@ output "host_map" {
 resource "google_compute_instance_group" "redpanda" {
   name      = "redpanda-group-${local.deployment_id}"
   count     = length(var.availability_zone)
-  zone      = var.availability_zone[count.index]
+  zone      = "${var.region}-${var.availability_zone[count.index]}"
   instances = local.hosts_map[var.availability_zone[count.index]]
 }
 
