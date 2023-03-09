@@ -12,16 +12,17 @@ resource "azurerm_linux_virtual_machine" "redpanda" {
   proximity_placement_group_id = azurerm_proximity_placement_group.redpanda.id
   virtual_machine_scale_set_id = var.ha ? azurerm_orchestrated_virtual_machine_scale_set.redpanda.0.id : null
   platform_fault_domain        = var.ha ? count.index % 3 : null
-  zone                         = try(var.availability_zone[count.index % length(var.availability_zone)], null)
-  size                         = var.vm_sku
-  admin_username               = var.admin_username
-  network_interface_ids        = ["${element(azurerm_network_interface.redpanda.*.id, count.index)}"]
-  
+
+  zone                  = try(var.zone, null)
+  size                  = var.vm_sku
+  admin_username        = var.admin_username
+  network_interface_ids = ["${element(azurerm_network_interface.redpanda.*.id, count.index)}"]
+
   os_disk {
     storage_account_type = "Premium_LRS"
     caching              = "ReadWrite"
   }
-  
+
   admin_ssh_key {
     username   = var.admin_username
     public_key = file(var.public_key_path)
