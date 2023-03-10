@@ -122,6 +122,9 @@ KEYS
   labels = tomap(var.labels)
 }
 
+# This generates a map of AZ -> Instance that can be used then creating the google_compute_instance_group
+# further down. When n AZs are defined, every nth broker, client and monitor is placed into each AZ (noting that we
+# can have at most one monitoring node).
 locals {
   hosts_map = {
     for i in range(length(var.availability_zone)) : var.availability_zone[i] =>
