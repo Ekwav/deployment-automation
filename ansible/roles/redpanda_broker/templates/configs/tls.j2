@@ -21,6 +21,8 @@ node:
   rpk:
     admin_api:
       tls:
+        cert_file: "{{ redpanda_cert_file }}"
+        key_file: "{{ redpanda_key_file }}"
         truststore_file: "{{ redpanda_truststore_file }}"
     kafka_api:
       tls:
