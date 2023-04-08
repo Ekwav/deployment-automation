@@ -148,7 +148,7 @@
   register: result
   changed_when: '"New configuration version is {{ config_version.stdout|int() }}." not in result.stdout'
   run_once: true
-  no_log: true
+  no_log: false
 
 # see if a cluster config operation should trigger ansible to restart each
 # redpanda instance in the cluster

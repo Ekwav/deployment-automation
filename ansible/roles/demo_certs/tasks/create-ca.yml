@@ -8,7 +8,7 @@
   ansible.builtin.file:
     path: "{{ root_ca_dir }}"
     state: directory
-    mode: "0600"
+    mode: "0700"
   tags:
     - create_ca
 
@@ -25,7 +25,7 @@
   delegate_to: localhost
   ansible.builtin.command:
     chdir: "{{ root_ca_dir }}"
-    cmd: openssl genrsa -out {{ root_ca_dir }}/ca.key 2048
+    cmd: openssl genrsa -out {{ root_ca_dir }}/ca.key 4096
     creates: "{{ root_ca_dir }}/ca.key"
   tags:
     - create_ca
@@ -34,7 +34,7 @@
   delegate_to: localhost
   ansible.builtin.command:
     chdir: "{{ root_ca_dir }}"
-    cmd: openssl req -new -x509 -config ca.conf -key ca.key -out ca.crt -days 365 -batch
+    cmd: openssl req -new -x509 -config ca.conf -key ca.key -out ca.crt -days 3650 -batch
     creates: "{{ root_ca_dir }}/ca.crt"
   tags:
     - create_ca
