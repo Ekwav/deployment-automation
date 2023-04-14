@@ -19,15 +19,15 @@ x509_extensions    = extensions
 
 [ root_ca_distinguished_name ]
 commonName              = Test TLS CA
-stateOrProvinceName     = NY
-countryName             = US
-emailAddress            = hi@vectorized.io
-organizationName        = Vectorized
-organizationalUnitName  = Vectorized Test
+stateOrProvinceName     = BY
+countryName             = DE
+emailAddress            = support@coflnet.com
+organizationName        = Coflnet
+organizationalUnitName  = Coflnet Infrastructure
 
 [ distinguished_name ]
-organizationName = Vectorized
-commonName       = Vectorized Test CA
+organizationName = Coflnet
+commonName       = Coflnet Test CA
 
 [ extensions ]
 keyUsage         = critical,digitalSignature,nonRepudiation,keyEncipherment,keyCertSign

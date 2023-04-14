@@ -10,8 +10,8 @@ node:
       enabled: true
       require_client_auth: true
       key_file: "{{ redpanda_key_file }}"
-      cert_file: "{{ redpanda_cert_file }}"
-      truststore_file: "{{ redpanda_truststore_file }}"
+      cert_file: "{{ redpanda_kafka_cert_file }}"
+      truststore_file: "{{ redpanda_kafka_truststore_file }}"
     rpc_server_tls:
       enabled: true
       require_client_auth: true

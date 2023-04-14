@@ -5,8 +5,7 @@
 aws/aws/**
 */**/*.lock*.hcl
 ansible/grafana_dashboards/redpanda-grafana.json
-ansible/tls/ca
-ansible/tls/certs
+ansible/tls/
 hosts.ini
 .DS_Store
 .idea/*

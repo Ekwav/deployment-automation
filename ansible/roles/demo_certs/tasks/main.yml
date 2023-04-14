@@ -1,4 +1,25 @@
 ---
+# creates a self signed CA for demo purposes, should not be used in prod
+- name: Create local ca
+  ansible.builtin.include_tasks: create-ca-kafka.yml
+  run_once: true
+  when:
+    - create_demo_certs | default(false) | bool
+
+# Issues certs from the demo local CA
+- name: Issue certs
+  ansible.builtin.include_tasks: issue-certs-kafka.yml
+  when:
+    - create_demo_certs | default(false) | bool
+
+# Copies certs that follow this directory structure into their respective node
+# tls/certs/{{ansible_hostname}}/node.crt
+- name: Install certs
+  ansible.builtin.include_tasks: install-certs-kafka.yml
+  when:
+    - handle_cert_install | default(false) | bool
+
+
 # creates a local CA for demo purposes, should not be used in prod
 - name: Create local ca
   ansible.builtin.include_tasks: create-ca.yml
