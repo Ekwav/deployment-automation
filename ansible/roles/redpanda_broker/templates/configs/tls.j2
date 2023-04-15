@@ -26,4 +26,6 @@ node:
         truststore_file: "{{ redpanda_truststore_file }}"
     kafka_api:
       tls:
-        truststore_file: "{{ redpanda_truststore_file }}"
+        cert_file: "{{ redpanda_kafka_cert_file }}"
+        key_file: "{{ redpanda_key_file }}"
+        truststore_file: "{{ redpanda_kafka_truststore_file }}"
