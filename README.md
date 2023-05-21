@@ -290,6 +290,6 @@ prefix=sky # prefix of the topics will be extended with a dash (-) to create nam
 user_password=$(head -c 16  /dev/random | md5sum | cut -f 1 -d\ )
 rpk acl user create $user_name --password $user_password
 # uses kafka api
-rpk acl create --allow-host '*' --operation all --user admin --password $admin_password --sasl-mechanism SCRAM-SHA-256 --topic "$prefix-" --resource-pattern-type prefixed --allow-principal User:$user_name
+rpk acl create --allow-host '*' --operation all --user admin --password $admin_password --sasl-mechanism SCRAM-SHA-256 --topic "$prefix-" --group "$prefix-" --resource-pattern-type prefixed --allow-principal User:$user_name
 echo "user_password: $user_password"
 ```
