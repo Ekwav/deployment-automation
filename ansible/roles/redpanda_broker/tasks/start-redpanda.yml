@@ -142,23 +142,23 @@
 #
 # TODO: fix changed_when to stop throwing ansible warnings on the jinja {{}} parsing
 #
-- name: Set cluster config
-  ansible.builtin.command: rpk cluster config set {{ item.key }} {{ item.value }} {{ redpanda_rpk_opts }}
-  loop: "{{ configuration.cluster | dict2items }}"
-  register: result
-  changed_when: '"New configuration version is {{ config_version.stdout|int() }}." not in result.stdout'
-  run_once: true
-  no_log: false
+#- name: Set cluster config
+#  ansible.builtin.command: rpk cluster config set {{ item.key }} {{ item.value }} {{ redpanda_rpk_admin_opts }}
+#  loop: "{{ configuration.cluster | dict2items }}"
+#  register: result
+#  changed_when: '"New configuration version is {{ config_version.stdout|int() }}." not in result.stdout'
+#  run_once: true
+#  no_log: false
 
 # see if a cluster config operation should trigger ansible to restart each
 # redpanda instance in the cluster
 #
 - name: Check if restart needed
   ansible.builtin.shell:
-    cmd: rpk cluster config status {{ redpanda_rpk_opts }} | grep '^{{ node_id }} ' | awk '{ print $3 }' |  grep -E 'true|false'
+    cmd: rpk cluster config status {{ redpanda_rpk_admin_opts }} | grep '^{{ node_id }} ' | awk '{ print $3 }' |  grep -E 'true|false'
   register: restart_required_rc
   changed_when: false
-  no_log: true
+  no_log: false
 
 # this instance of node config generation only runs after a cluster has been
 # initialized. This is used to update configurations post-cluster setup when
